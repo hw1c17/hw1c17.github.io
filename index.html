@@ -116,7 +116,7 @@
         const width = window.innerWidth;
         const height = window.innerHeight;
         const camera = new THREE.PerspectiveCamera(60, width / height, 1, 1000);
-        camera.position.set(8, 5, 8);
+        camera.position.set(6, 5, 6);
         camera.lookAt(0, 0, 0);
        
 
@@ -151,7 +151,7 @@
 
         // 使 OrbitControls 控制两个渲染器
         const controls = new OrbitControls(camera, renderer.domElement);
-        controls.target.set(0, 2.5, 0);
+        controls.target.set(0, 3.5, 0);
         controls.addEventListener('change', () => {
             renderer.render(scene, camera);
             cssRenderer.render(scene, camera);
