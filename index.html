@@ -163,7 +163,7 @@
         const model = new THREE.Group(); // 声明一个组对象，用来添加加载成功的三维场景
         let door;
 
-        loader.load("/model1.glb", function (gltf) {
+        loader.load("/model2.glb", function (gltf) {
             model.add(gltf.scene);
 
             model.traverse(function (child) {
@@ -256,9 +256,7 @@
                 const name = selectedObject.name;
                 // 检查点击的对象名称是否为特定子节点
                 if (
-                    name.startsWith("气瓶") &&
-                    parseInt(name.split("-")[2]) >= 4 &&
-                    parseInt(name.split("-")[2]) <= 9
+                    name.includes("瓶") 
                 ) {
                     outlinePass.selectedObjects = [selectedObject];
 
