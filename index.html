@@ -105,10 +105,19 @@
         // scene.add(axesHelper);
 
         // 光源设置
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
-        directionalLight.position.set(200, 200, 200);
-        scene.add(directionalLight);
-        directionalLight.position.set( 300, 300, 300 );
+        const directionalLight1 = new THREE.DirectionalLight(0xffffff, 5);
+        directionalLight1.position.set(600, 600, 600);
+        scene.add(directionalLight1);
+        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 5);
+        directionalLight2.position.set( -600, 600, -600 );
+        scene.add(directionalLight2);
+        
+        // 辅助光源方向
+        // const directionalLighthelper1 = new THREE.DirectionalLightHelper( directionalLight1, 5 , 0x000000 );
+        // scene.add( directionalLighthelper1 );
+        // const directionalLighthelper2 = new THREE.DirectionalLightHelper( directionalLight2, 5 , 0x000000 );
+        // scene.add( directionalLighthelper2 );
+
         const ambient = new THREE.AmbientLight(0xffffff, 1);
         scene.add(ambient);
 
