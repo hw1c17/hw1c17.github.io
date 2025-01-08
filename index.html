@@ -62,10 +62,9 @@
         }
 
         .temperatureLabel {
-            color: yellow;
             font-size: 8px; /* 或根据需要调整 */
-            background-color: rgba(0, 0, 0, 0.7); /* 深色背景 */
-            padding: 2px 4px; /* 内边距 */
+            background-color: rgba(255, 255, 255, 0); /* 深色背景 */
+            padding: 0px; /* 内边距 */
             border-radius: 2px;
             position: absolute;
             transform: translate(-50%, -50%);
@@ -181,8 +180,17 @@
         const loader = new GLTFLoader(); // 创建一个GLTF加载器
         const model = new THREE.Group(); // 声明一个组对象，用来添加加载成功的三维场景
         let door;
+        const iconMap = {
+            "T1": "images/T1.png",
+            "T2": "images/T2.png",
+            "T3": "images/T3.png",
+            "T4": "images/T4.png",
+            "T5": "images/T5.png",
+            "T6": "images/T6.png",
+            // 可以添加更多物体和图标路径
+        };
 
-        loader.load("/model3.glb", function (gltf) {
+        loader.load("/model4.glb", function (gltf) {
             model.add(gltf.scene);
 
             model.traverse(function (child) {
@@ -198,9 +206,11 @@
                         subChild.material = subChild.material.clone(); 
                         subChild.material.transparent = true; 
                         startFlashing(subChild.material);
+
+                        const imagePath = iconMap[subChild.name]
                         
                         // 创建标签
-                        const label = createTemperatureLabel(subChild.name); // 使用子对象名字创建标签
+                        const label = createTemperatureLabel(imagePath); // 使用子对象名字创建标签
                         subChild.add(label); // 将标签添加到子对象上，确保标签随着子对象移动
                         
                         }
@@ -362,15 +372,22 @@
             return css3DObject;
         }
 
-        function createTemperatureLabel(content) {
+        function createTemperatureLabel(imagePath) {
             const div = document.createElement('div');
             div.className = 'temperatureLabel'; // 设置为温度探针的标签
-            div.textContent = content;
+
+            // 创建一个img标签，用来加载SVG图标
+            const img = document.createElement('img');
+            img.src = imagePath; // 指定SVG文件的路径
+            img.style.width = '20px'; // 设置图标的宽度
+            img.style.height = '20px'; // 设置图标的高度
+
+            div.appendChild(img); // 将img标签添加到div中
 
             const css3DObject = new CSS3DObject(div);
             css3DObject.position.set(0, 0, 0); // 将标签位置设置到子对象的上方，便于观察
             css3DObject.scale.set(0.02, 0.02, 0.02); // 缩小标签
-            css3DObject.rotation.y = 0; // 初始朝向z轴正方向
+
             return css3DObject;
         }
 
@@ -388,8 +405,15 @@
             requestAnimationFrame(render);
 
             if (isRotating) {
-                model.rotateY(0.01); // 仅当isRotating为true时旋转模型
+                model.rotateY(0.003); // 仅当isRotating为true时旋转模型
             }
+             // 更新所有标签朝向摄像机
+            scene.traverse(function(child) {
+                if (child instanceof CSS3DObject) {
+                    child.lookAt(camera.position); // 让标签朝向摄像机
+                }
+            });
+
             controls.update();
             renderer.render(scene, camera);
             cssRenderer.render(scene, camera);
